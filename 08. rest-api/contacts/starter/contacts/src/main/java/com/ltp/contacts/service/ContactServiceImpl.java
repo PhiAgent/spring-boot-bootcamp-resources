@@ -5,6 +5,7 @@ import java.util.stream.IntStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ltp.contacts.pojo.Contact;
 import com.ltp.contacts.repository.ContactRepository;
 
 @Service
