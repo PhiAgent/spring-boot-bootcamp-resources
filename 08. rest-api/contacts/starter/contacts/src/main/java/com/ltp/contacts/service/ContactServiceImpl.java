@@ -19,6 +19,8 @@ public class ContactServiceImpl implements ContactService {
         return contactRepository.getContact(findIndexById(id));
     }
 
+    // "a33d23fd-08c5-4be3-9df8-c495f389911d"
+
     @Override
     public void saveContact(Contact contact){
         contactRepository.saveContact(contact);
@@ -27,6 +29,11 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public void updateContact(String id, Contact contact){
         contactRepository.updateContact(findIndexById(id), contact);
+    }
+
+    @Override
+    public void deleteContact(String id){
+        contactRepository.deleteContact(findIndexById(id));
     }
 
     private int findIndexById(String id) {
