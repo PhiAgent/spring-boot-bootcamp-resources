@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ltp.contacts.pojo.Contact;
@@ -23,7 +25,11 @@ public class ContactController {
     }
 
     @PostMapping("/contact")
-    public ResponseEntity<HttpStatus> createContact(Contact contact){
+    public ResponseEntity<HttpStatus> createContact(@RequestBody Contact contact){
+        // need to add the requestbody annotation to
+        // deserialize the request body from the post request
+        // into a contact object that can be used by the handler
+        // method
         contactService.saveContact(contact);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
