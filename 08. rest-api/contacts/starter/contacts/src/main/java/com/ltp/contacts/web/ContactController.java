@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ltp.contacts.pojo.Contact;
 import com.ltp.contacts.service.ContactService;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 @RestController
 public class ContactController {
@@ -32,6 +34,12 @@ public class ContactController {
         // method
         contactService.saveContact(contact);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PutMapping("contact/{id}")
+    public ResponseEntity<Contact> updateContact(@PathVariable String id, @RequestBody Contact contact) {
+        contactService.updateContact(id, contact);
+        return new ResponseEntity<>(contactService.getContactById(id),HttpStatus.OK);
     }
 
     // rest Get operation:
