@@ -22,6 +22,12 @@ public class ContactController {
         return new ResponseEntity<>(contact, HttpStatus.OK);
     }
 
+    @PostMapping("/contact")
+    public ResponseEntity<HttpStatus> createContact(Contact contact){
+        contactService.saveContact(contact);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
     // rest Get operation:
     // @PathVariable is used to fetch a defined item in the path of the request
     // @ResponseBody is used to serialize the response of the request. without it,

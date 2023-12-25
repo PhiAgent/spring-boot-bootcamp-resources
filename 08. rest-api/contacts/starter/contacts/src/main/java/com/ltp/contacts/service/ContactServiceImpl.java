@@ -19,6 +19,10 @@ public class ContactServiceImpl implements ContactService {
         return contactRepository.getContact(findIndexById(id));
     }
 
+    @Override
+    public void saveContact(Contact contact){
+        contactRepository.saveContact(contact);
+    }
 
     private int findIndexById(String id) {
         return IntStream.range(0, contactRepository.getContacts().size())
