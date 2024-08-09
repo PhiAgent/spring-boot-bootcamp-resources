@@ -1,5 +1,7 @@
 package com.ltp.gradesubmission.web;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,7 +18,7 @@ import com.ltp.gradesubmission.entity.Student;
 @RequestMapping("/student")
 public class StudentController {
 
-    
+
     @GetMapping("/{id}")
     public ResponseEntity<Student> getStudent(@PathVariable Long id) {
         return new ResponseEntity<>(HttpStatus.OK);
