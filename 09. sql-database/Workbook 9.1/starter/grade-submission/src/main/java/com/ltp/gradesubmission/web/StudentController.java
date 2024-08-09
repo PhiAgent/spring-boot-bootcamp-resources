@@ -1,5 +1,7 @@
 package com.ltp.gradesubmission.web;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,5 +33,10 @@ public class StudentController {
   @DeleteMapping("")
   public ResponseEntity<Student> deleteStudent(@RequestParam String id){
     return new ResponseEntity(HttpStatus.NO_CONTENT);
+  }
+
+  @GetMapping("/all")
+  public ResponseEntity<List<Student>> getStudents(){
+    return new ResponseEntity(HttpStatus.OK);
   }
 }
