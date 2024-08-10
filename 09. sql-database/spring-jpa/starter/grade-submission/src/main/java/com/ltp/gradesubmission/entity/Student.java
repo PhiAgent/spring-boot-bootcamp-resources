@@ -3,6 +3,7 @@ package com.ltp.gradesubmission.entity;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -48,7 +49,7 @@ public class Student {
     // A single student can have many grades. the mappedby key here tells springboot
     // that another table owns this relationship so there's no need to
     // create a join table
-    @OneToMany(mappedBy = "student")
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     // we use this annotation to ignore the grades property during serialization of
     // a grade object to json in REST response
     // the reason we ignore the grades field in student is because each grade has a
