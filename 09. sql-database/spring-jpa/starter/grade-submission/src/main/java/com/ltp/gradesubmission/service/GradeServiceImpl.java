@@ -15,11 +15,12 @@ public class GradeServiceImpl implements GradeService {
 
     @Autowired
     GradeRepository gradeRepository;
+    @Autowired
     StudentRepository studentRepository;
 
     @Override
     public Grade getGrade(Long studentId, Long courseId) {
-        return null;
+        return gradeRepository.findByStudentId(studentId);
     }
 
     @Override
@@ -38,7 +39,6 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     public void deleteGrade(Long studentId, Long courseId) {
-
     }
 
     @Override
