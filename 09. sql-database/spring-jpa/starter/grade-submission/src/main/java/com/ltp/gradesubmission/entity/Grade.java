@@ -31,7 +31,7 @@ public class Grade {
 
     // A single student can have many grades and we define that using the annotation
     // of ManyToOne
-    @ManyToOne
+    @ManyToOne(optional = false)
     // Each grade will have a foriegn key that points to the student that owns that
     // grade; to define this relationship, we'll use the joinColumn annotation
     // we'll specify the name of the column in the foreign table(referencedColumnName)
