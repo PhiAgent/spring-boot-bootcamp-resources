@@ -1,6 +1,7 @@
 package com.ltp.gradesubmission.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.ltp.gradesubmission.entity.Course;
 import com.ltp.gradesubmission.entity.Grade;
 import com.ltp.gradesubmission.entity.Student;
+import com.ltp.gradesubmission.exception.CourseNotFoundException;
+import com.ltp.gradesubmission.exception.StudentNotFoundException;
 import com.ltp.gradesubmission.repository.CourseRepository;
 import com.ltp.gradesubmission.repository.GradeRepository;
 import com.ltp.gradesubmission.repository.StudentRepository;
@@ -29,9 +32,16 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     public Grade saveGrade(Grade grade, Long studentId, Long courseId) {
+        Course course; Student student;
         // we find the student that matches that id
-        Student student = studentRepository.findById(studentId).get();
-        Course course = courseRepository.findById(courseId).get();
+        Optional<Student> possibleStudent = studentRepository.findById(studentId);
+        if(possibleStudent.isPresent()) student = possibleStudent.get();
+        else throw new StudentNotFoundException(studentId);
+
+        Optional<Course> possibleCourse = courseRepository.findById(courseId);
+        if(possibleCourse.isPresent()) course = possibleCourse.get();
+        else throw new CourseNotFoundException(courseId);
+
         // the we associate that student to the grade before saving the grade
         grade.setStudent(student);
         grade.setCourse(course);
