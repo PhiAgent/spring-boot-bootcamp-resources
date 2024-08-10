@@ -10,6 +10,7 @@ import com.ltp.gradesubmission.entity.Course;
 import com.ltp.gradesubmission.entity.Grade;
 import com.ltp.gradesubmission.entity.Student;
 import com.ltp.gradesubmission.exception.CourseNotFoundException;
+import com.ltp.gradesubmission.exception.GradeNotFoundException;
 import com.ltp.gradesubmission.exception.StudentNotFoundException;
 import com.ltp.gradesubmission.repository.CourseRepository;
 import com.ltp.gradesubmission.repository.GradeRepository;
@@ -27,7 +28,10 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     public Grade getGrade(Long studentId, Long courseId) {
-        return gradeRepository.findByStudentIdAndCourseId(studentId, courseId);
+        Optional<Grade> possibleGrade = gradeRepository.findByStudentIdAndCourseId(studentId, courseId);
+
+        if(possibleGrade.isPresent()) return possibleGrade.get();
+        else throw new GradeNotFoundException(studentId, courseId);
     }
 
     @Override
@@ -50,11 +54,18 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     public Grade updateGrade(String score, Long studentId, Long courseId) {
-        Grade grade = gradeRepository.findByStudentIdAndCourseId(studentId, courseId);
-        grade.setScore(score);
-        // spring jpa will update the grade rather than create a new one since
-        // the grade being saved already exists in the database
-        return gradeRepository.save(grade);
+
+        Optional<Grade> possibleGrade = gradeRepository.findByStudentIdAndCourseId(studentId, courseId);
+
+        if (possibleGrade.isPresent()){
+            Grade grade = possibleGrade.get();
+            grade.setScore(score);
+            // spring jpa will update the grade rather than create a new one since
+            // the grade being saved already exists in the database
+            return gradeRepository.save(grade);
+        }
+        else
+            throw new GradeNotFoundException(studentId, courseId);
     }
 
     @Override
