@@ -35,7 +35,8 @@ public class StudentController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteStudent(@PathVariable Long id) {
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        studentService.deleteStudent(id);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/all")
