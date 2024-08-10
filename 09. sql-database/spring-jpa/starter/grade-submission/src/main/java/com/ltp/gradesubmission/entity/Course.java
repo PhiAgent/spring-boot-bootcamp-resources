@@ -18,13 +18,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "grades")
+@Table(name = "courses")
 @Getter
 @Setter
-@AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
 public class Course {
 
@@ -32,12 +33,17 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @NonNull
     @Column(name = "subject", nullable = false)
-    @NonNull
     private String subject;
-    @Column(name = "code", nullable = false)
+
     @NonNull
+    @Column(name = "code", nullable = false)
     private String code;
+
+    @NonNull
+    @Column(name = "description")
     private String description;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
