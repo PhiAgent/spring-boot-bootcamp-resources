@@ -10,8 +10,7 @@ import javax.validation.Payload;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = NotBlankValidator.class)
-
+@Constraint(validatedBy = BirthDateValidator.class)
 public @interface BirthDate {
   String message() default "Birth Date must be in the past";
 

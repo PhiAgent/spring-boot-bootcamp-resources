@@ -14,7 +14,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ltp.gradesubmission.validation.BirthDate;
-import com.ltp.gradesubmission.validation.NotBlank;
+import javax.validation.constraints.NotBlank;
 
 import lombok.*;
 
@@ -38,7 +38,7 @@ public class Student {
 
     @NonNull
     @Column(name = "birth_date", nullable = false)
-    @BirthDate(message = "The birth date must be in the past")
+    @BirthDate(message = "The birth date must be in the past and after 1900")
     private LocalDate birthDate;
 
     @JsonIgnore

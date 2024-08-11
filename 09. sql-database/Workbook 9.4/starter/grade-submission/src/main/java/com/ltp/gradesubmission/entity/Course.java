@@ -3,9 +3,10 @@ package com.ltp.gradesubmission.entity;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ltp.gradesubmission.validation.NotBlank;
+// import com.ltp.gradesubmission.validation.NotBlank;
 
 import lombok.*;
 
