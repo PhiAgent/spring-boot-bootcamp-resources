@@ -3,6 +3,7 @@ package com.ltp.gradesubmission;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,11 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
     public ResponseEntity<Object> handleResourceNotFoundException(RuntimeException ex){
 
         return new ResponseEntity(new ErrorResponse(List.of(ex.getMessage())), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(EmptyResultDataAccessException.class)
+    public ResponseEntity<Object> handleDataAccessException(){
+        return new ResponseEntity(new ErrorResponse(List.of("Cannot delete non-existing resource")), HttpStatus.NOT_FOUND);
     }
 
     // this handler takes care of field level violations and returns them in the error response
