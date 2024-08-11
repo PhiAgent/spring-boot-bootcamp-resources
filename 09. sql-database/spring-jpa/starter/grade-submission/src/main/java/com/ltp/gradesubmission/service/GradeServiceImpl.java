@@ -30,21 +30,13 @@ public class GradeServiceImpl implements GradeService {
     public Grade getGrade(Long studentId, Long courseId) {
         Optional<Grade> possibleGrade = gradeRepository.findByStudentIdAndCourseId(studentId, courseId);
 
-        if(possibleGrade.isPresent()) return possibleGrade.get();
-        else throw new GradeNotFoundException(studentId, courseId);
+        return unwrapGrade(possibleGrade, studentId, courseId);
     }
 
     @Override
     public Grade saveGrade(Grade grade, Long studentId, Long courseId) {
-        Course course; Student student;
-        // we find the student that matches that id
-        Optional<Student> possibleStudent = studentRepository.findById(studentId);
-        if(possibleStudent.isPresent()) student = possibleStudent.get();
-        else throw new StudentNotFoundException(studentId);
-
-        Optional<Course> possibleCourse = courseRepository.findById(courseId);
-        if(possibleCourse.isPresent()) course = possibleCourse.get();
-        else throw new CourseNotFoundException(courseId);
+        Course course = CourseServiceImpl.unwrapCourse(courseRepository.findById(courseId), courseId);
+        Student student = StudentServiceImpl.unwrapStudent(studentRepository.findById(studentId), studentId);
 
         // the we associate that student to the grade before saving the grade
         grade.setStudent(student);
@@ -57,15 +49,11 @@ public class GradeServiceImpl implements GradeService {
 
         Optional<Grade> possibleGrade = gradeRepository.findByStudentIdAndCourseId(studentId, courseId);
 
-        if (possibleGrade.isPresent()){
-            Grade grade = possibleGrade.get();
-            grade.setScore(score);
-            // spring jpa will update the grade rather than create a new one since
-            // the grade being saved already exists in the database
-            return gradeRepository.save(grade);
-        }
-        else
-            throw new GradeNotFoundException(studentId, courseId);
+        Grade unwrappedGrade = unwrapGrade(possibleGrade, studentId, courseId);
+        unwrappedGrade.setScore(score);
+        // spring jpa will update the grade rather than create a new one since
+        // the grade being saved already exists in the database
+        return gradeRepository.save(unwrappedGrade);
     }
 
     @Override
@@ -86,5 +74,12 @@ public class GradeServiceImpl implements GradeService {
     @Override
     public List<Grade> getAllGrades() {
         return (List<Grade>) gradeRepository.findAll();
+    }
+
+    static Grade unwrapGrade(Optional<Grade> entity, Long studentId, Long courseId) {
+        if (entity.isPresent())
+            return entity.get();
+        else
+            throw new GradeNotFoundException(studentId, courseId);
     }
 }
