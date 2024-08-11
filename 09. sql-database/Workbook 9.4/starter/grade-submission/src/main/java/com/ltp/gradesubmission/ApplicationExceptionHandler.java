@@ -23,28 +23,19 @@ import com.ltp.gradesubmission.exception.StudentNotFoundException;
 @ControllerAdvice
 public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
 
+    // This handler takes care of not found exceptions and has nothing to do with
+    // field level violations and exception
     @ExceptionHandler({CourseNotFoundException.class, GradeNotFoundException.class, StudentNotFoundException.class})
     public ResponseEntity<Object> handleResourceNotFoundException(RuntimeException ex){
 
         return new ResponseEntity(new ErrorResponse(List.of(ex.getMessage())), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(NoScoreException.class)
-    public ResponseEntity<Object> handleNoScoreException(NoScoreException NoScoreException) {
-
-        ErrorResponse errorResponse = new ErrorResponse(NoScoreException.getMessage());
-
-        return new ResponseEntity(errorResponse, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(NoScoreException.class)
-    public ResponseEntity<Object> handleNoScoreException(NoScoreException NoScoreException) {
-
-        ErrorResponse errorResponse = new ErrorResponse(NoScoreException.getMessage());
-
-        return new ResponseEntity(errorResponse, HttpStatus.NOT_FOUND);
-    }
-
+    // this handler takes care of field level violations and returns them in the error response
+    // the headers, status and request params are not needed here but since the
+    // method is overriding a method that
+    // actually includes these params, we must
+    // add them here
     @Override //identical to method from workbook 8.3
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<String> errorMessages = new ArrayList<String>();
