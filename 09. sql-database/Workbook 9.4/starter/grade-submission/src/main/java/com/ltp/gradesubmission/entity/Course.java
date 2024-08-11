@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ltp.gradesubmission.validation.NotBlank;
 
 import lombok.*;
 
@@ -23,14 +24,17 @@ public class Course {
 
     @NonNull
     @Column(name = "subject", nullable = false)
+    @NotBlank(message = "Subject cannot be blank")
     private String subject;
 
     @NonNull
     @Column(name = "code", nullable = false, unique = true)
+    @NotBlank(message = "Course Code cannot be blank")
     private String code;
 
     @NonNull
     @Column(name = "description", nullable = false)
+    @NotBlank(message = "Description cannot be blank")
     private String description;
 
     @JsonIgnore
