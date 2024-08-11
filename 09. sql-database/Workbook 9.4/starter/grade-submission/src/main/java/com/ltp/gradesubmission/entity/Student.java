@@ -13,6 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ltp.gradesubmission.validation.BirthDate;
+import com.ltp.gradesubmission.validation.NotBlank;
 
 import lombok.*;
 
@@ -31,14 +33,16 @@ public class Student {
 
     @NonNull
     @Column(name = "name", nullable = false)
+    @NotBlank(message = "Name cannot be blank")
     private String name;
 
     @NonNull
     @Column(name = "birth_date", nullable = false)
+    @BirthDate(message = "The birth date must be in the past")
     private LocalDate birthDate;
 
     @JsonIgnore
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<Grade> grades;
-    
+
 }
