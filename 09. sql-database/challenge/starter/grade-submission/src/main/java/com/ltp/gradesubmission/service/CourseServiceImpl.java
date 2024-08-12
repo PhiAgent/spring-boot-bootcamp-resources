@@ -7,6 +7,7 @@ import com.ltp.gradesubmission.entity.Course;
 import com.ltp.gradesubmission.entity.Student;
 import com.ltp.gradesubmission.exception.CourseNotFoundException;
 import com.ltp.gradesubmission.repository.CourseRepository;
+import com.ltp.gradesubmission.repository.StudentRepository;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,8 @@ import org.springframework.stereotype.Service;
 public class CourseServiceImpl implements CourseService {
 
     CourseRepository courseRepository;
-    
+    StudentRepository studentRepository;
+
     @Override
     public Course getCourse(Long id) {
         Optional<Course> course = courseRepository.findById(id);
@@ -29,8 +31,8 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void deleteCourse(Long id) {  
-        courseRepository.deleteById(id);      
+    public void deleteCourse(Long id) {
+        courseRepository.deleteById(id);
     }
 
     @Override
@@ -40,8 +42,17 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course addStudentToCourse(Long studentId, Long courseId) {
-        // TODO Auto-generated method stub
-        return null;
+        Course course = unwrapCourse(courseRepository.findById(courseId), courseId);
+        Student student = StudentServiceImpl.unwrapStudent(studentRepository.findById(studentId), studentId);
+        course.getStudents().add(student);
+        // Remember to save the course again
+        // since you're modifying it, it must
+        // be saved again so the changes persist
+        // also, since the course you're saving
+        // already exists in the db, the
+        // crudRepository provided by JPA will
+        // update instead of create a new course
+        return courseRepository.save(course);
     }
 
     @Override
@@ -54,6 +65,4 @@ public class CourseServiceImpl implements CourseService {
         if (entity.isPresent()) return entity.get();
         else throw new CourseNotFoundException(id);
     }
-
-
 }
