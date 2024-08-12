@@ -27,7 +27,7 @@ import lombok.AllArgsConstructor;
 public class StudentController {
 
     StudentService studentService;
-    
+
     @GetMapping("/{id}")
     public ResponseEntity<Student> getStudent(@PathVariable Long id) {
         return new ResponseEntity<>(studentService.getStudent(id), HttpStatus.OK);
@@ -51,7 +51,7 @@ public class StudentController {
 
     @GetMapping("/{id}/courses")
     public ResponseEntity<List<Course>> getEnrolledCourses(@PathVariable Long id) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(studentService.getEnrolledCourses(id),HttpStatus.OK);
     }
 
 }

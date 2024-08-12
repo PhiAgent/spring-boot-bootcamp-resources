@@ -1,6 +1,7 @@
 package com.ltp.gradesubmission.service;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -31,8 +32,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void deleteStudent(Long id) {      
-        studentRepository.deleteById(id);  
+    public void deleteStudent(Long id) {
+        studentRepository.deleteById(id);
     }
 
     @Override
@@ -42,8 +43,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Course> getEnrolledCourses(Long id) {
-        // TODO Auto-generated method stub
-        return null;
+        Student student = unwrapStudent(studentRepository.findById(id), id);
+        return new ArrayList<Course>(student.getCourses());
     }
 
     static Student unwrapStudent(Optional<Student> entity, Long id) {

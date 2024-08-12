@@ -55,7 +55,6 @@ public class CourseController {
 
     @GetMapping("/{id}/students")
     public ResponseEntity<List<Student>> getEnrolledStudents(@PathVariable Long id) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(courseService.getEnrolledStudents(id), HttpStatus.OK);
     }
-
 }

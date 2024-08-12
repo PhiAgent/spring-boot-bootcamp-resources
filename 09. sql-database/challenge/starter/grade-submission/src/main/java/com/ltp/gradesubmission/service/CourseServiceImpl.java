@@ -1,5 +1,6 @@
 package com.ltp.gradesubmission.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,8 +58,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Student> getEnrolledStudents(Long id) {
-        // TODO Auto-generated method stub
-        return null;
+        Course course = unwrapCourse(courseRepository.findById(id), id);
+
+        return new ArrayList<Student>(course.getStudents());
     }
 
     static Course unwrapCourse(Optional<Course> entity, Long id) {
