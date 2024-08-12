@@ -50,7 +50,7 @@ public class CourseController {
 
     @PutMapping("/{courseId}/student/{studentId}")
     public ResponseEntity<Course> enrollStudentToCourse(@PathVariable Long courseId, @PathVariable Long studentId) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(courseService.addStudentToCourse(studentId, courseId), HttpStatus.OK);
     }
 
     @GetMapping("/{id}/students")

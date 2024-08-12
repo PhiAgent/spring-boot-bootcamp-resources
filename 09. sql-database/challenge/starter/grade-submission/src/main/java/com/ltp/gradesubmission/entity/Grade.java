@@ -21,7 +21,7 @@ import lombok.*;
 @Entity
 @Table(name = "grade", uniqueConstraints={
     @UniqueConstraint(columnNames = {"student_id", "course_id"})
-}) 
+})
 public class Grade {
 
     @Id
@@ -40,5 +40,4 @@ public class Grade {
     @ManyToOne(optional = false)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
-    
 }
