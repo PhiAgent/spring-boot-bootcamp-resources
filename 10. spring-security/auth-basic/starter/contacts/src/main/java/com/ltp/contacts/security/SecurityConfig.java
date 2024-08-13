@@ -48,10 +48,16 @@ public class SecurityConfig {
         // the same encryption and if the result is the same as what
         // we have, then the input is the same
         .password(bCryptPasswordEncoder.encode("admin-pass"))
+        .roles("ADMIN")
         .build();
         // after building the userdetails, the userdetails is going to be stored in memory
+    UserDetails user = User.builder()
+        .username("user")
+        .password(bCryptPasswordEncoder.encode("user-pass"))
+        .roles("USER")
+        .build();
 
-    // You can access the userdetail stored in memory using InMemoryUserDetailsManager
-    return new InMemoryUserDetailsManager(admin);
+    // You can access the userdetail stored in memory using InMem
+    return new InMemoryUserDetailsManager(admin, user);
   }
 }
