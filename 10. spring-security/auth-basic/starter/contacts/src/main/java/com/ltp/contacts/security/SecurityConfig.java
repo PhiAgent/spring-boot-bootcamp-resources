@@ -3,7 +3,7 @@ package com.ltp.contacts.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.configurers.provisioning.InMemoryUserDetailsManagerConfigurer;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,26 +26,28 @@ public class SecurityConfig {
   // by defining this bean, we remove the default login ui that spring security
   // applies once we add the spring security dependency
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http
+      http
       // this is how you disable csrf protection for requests coming from browsers
       // csrf protection is an attack against the browser. in our current service
       // we're making calls from postman and don't involve browsers so csrf protection is not necessary
       // csrf protection is expensive
-      .csrf().disable()
-        // authorize request
-        // right after authorizeRequest we can
-        // implement some authorization rules
-      .authorizeRequests()
-      // antMatchers can apply authorization to a path you specify and it can also
-      // accept http methods as well
-      .antMatchers(HttpMethod.DELETE).hasRole("ADMIN")
-      // authenticate request
-      .anyRequest().authenticated()
-      // using basic authentication
-      .and()
-      .httpBasic()
-      .and()
-      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+      .csrf(csrf -> csrf.disable())
+      // authorize request
+      // right after authorizeRequest we can
+      // implement some authorization rules
+      .authorizeRequests(requests -> requests
+              // antMatchers can apply authorization to a path you specify and it can also
+              // accept http methods as well
+              // .antMatchers(HttpMethod.DELETE).hasRole("ADMIN")
+              .antMatchers(HttpMethod.DELETE, "/delete/*/contact").hasRole("ADMIN")
+              .antMatchers(HttpMethod.POST).hasAnyRole("ADMIN", "USER")
+              // this is used to allow all users regardless of authentication to be
+              // able to get resources
+              .antMatchers(HttpMethod.GET).permitAll()
+              // authenticate request
+              .anyRequest().authenticated())
+      .httpBasic(Customizer.withDefaults())
+      .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
     return http.build();
   }

@@ -19,7 +19,7 @@ import com.ltp.contacts.service.ContactService;
 
 @RestController
 public class ContactController {
-    
+
     @Autowired
     private ContactService contactService;
 
@@ -41,12 +41,12 @@ public class ContactController {
         return new ResponseEntity<>(contact, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/contact/{id}")
+    @DeleteMapping("delete/{id}/contact")
     public ResponseEntity<HttpStatus> deleteContact(@PathVariable String id) {
         contactService.deleteContact(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    
+
 
 }
