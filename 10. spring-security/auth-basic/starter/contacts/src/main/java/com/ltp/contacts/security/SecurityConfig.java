@@ -2,6 +2,7 @@ package com.ltp.contacts.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.configurers.provisioning.InMemoryUserDetailsManagerConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -26,8 +27,18 @@ public class SecurityConfig {
   // applies once we add the spring security dependency
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
+      // this is how you disable csrf protection for requests coming from browsers
+      // csrf protection is an attack against the browser. in our current service
+      // we're making calls from postman and don't involve browsers so csrf protection is not necessary
+      // csrf protection is expensive
+      .csrf().disable()
         // authorize request
+        // right after authorizeRequest we can
+        // implement some authorization rules
       .authorizeRequests()
+      // antMatchers can apply authorization to a path you specify and it can also
+      // accept http methods as well
+      .antMatchers(HttpMethod.DELETE).hasRole("ADMIN")
       // authenticate request
       .anyRequest().authenticated()
       // using basic authentication
