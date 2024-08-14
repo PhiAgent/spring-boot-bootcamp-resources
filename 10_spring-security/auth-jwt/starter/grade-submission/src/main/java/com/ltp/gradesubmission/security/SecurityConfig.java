@@ -20,6 +20,9 @@ public class SecurityConfig {
             // the h2 console is a ui rendered within a frame
             // by default, springboot prevents rendering inside a frame so
             // to use the h2 ui, we have to disable this
+            // note that this is only if you use
+            // h2, in prod, you'll never use h2 so these configs won't be
+            // needed
             .headers(headers -> headers.frameOptions().disable())
             .csrf(csrf -> csrf.disable())
             .authorizeRequests(requests -> requests
