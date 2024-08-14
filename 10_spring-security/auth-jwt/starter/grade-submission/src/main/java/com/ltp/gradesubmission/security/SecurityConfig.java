@@ -6,6 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+
+import com.ltp.gradesubmission.security.filter.AuthenticationFilter;
+
 import lombok.AllArgsConstructor;
 
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,6 +20,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
+        // this is where we specify what url we intend to authenticate on
+        authenticationFilter.setFilterProcessesUrl("/authenticate");
         http
             // the h2 console is a ui rendered within a frame
             // by default, springboot prevents rendering inside a frame so
@@ -30,6 +36,11 @@ public class SecurityConfig {
                     .antMatchers("/h2/**").permitAll() // New Line: allows us to access the h2 console without the need to authenticate. ' ** '  instead of ' * ' because multiple path levels will follow /h2.
                     .antMatchers(HttpMethod.POST, SecurityConstants.REGISTER_PATH).permitAll()
                     .anyRequest().authenticated())
+                    // this filter won't be applied unless user
+                    // specifies that they want to authenticate on this
+                    // url by defining the url in the authenticator filter
+                    .addFilter(
+                        authenticationFilter)
             .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
