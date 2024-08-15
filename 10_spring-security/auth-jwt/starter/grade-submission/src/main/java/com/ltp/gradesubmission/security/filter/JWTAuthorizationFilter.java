@@ -1,6 +1,7 @@
 package com.ltp.gradesubmission.security.filter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -33,13 +34,21 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     }
 
     String token = header.replace(SecurityConstants.BEARER, "");
+    // So here, JWT will extract the header, and the payload from the token and combine it
+    // with the secret key, and verify the signature produced agains the signature
+    // already in the token
     String username = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET_KEY))
       .build()
       .verify(token)
+      // if no exception thrown at this point
+      // a decoded jwt is returned from which we
+      // can extract the subject
       .getSubject();
 
-      Authentication authentication = new UsernamePasswordAuthenticationToken(username, null);
-      SecurityContextHolder.getContext().setAuthentication(authentication);
-      chain.doFilter(request, response);
+    Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, new ArrayList());
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    // At this point, we continue to the rest of the request
+    chain.doFilter(request, response);
   }
 }
