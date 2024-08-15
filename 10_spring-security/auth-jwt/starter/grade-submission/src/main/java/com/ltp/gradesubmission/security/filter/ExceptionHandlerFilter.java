@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.ltp.gradesubmission.exception.EntityNotFoundException;
 
 // Inherit from OncePerRequestFilter instead of general filter to ensure the filter is invoked
@@ -29,6 +30,10 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
     catch (EntityNotFoundException e) {
       response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       response.getWriter().write("Username does not exist");
+      response.getWriter().flush();
+    } catch (JWTVerificationException e) {
+      response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+      response.getWriter().write("JWT not valid");
       response.getWriter().flush();
     } catch (RuntimeException e) {
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
