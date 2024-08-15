@@ -10,6 +10,7 @@ import com.ltp.gradesubmission.exception.EntityNotFoundException;
 import com.ltp.gradesubmission.repository.UserRepository;
 
 import lombok.AllArgsConstructor;
+
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
