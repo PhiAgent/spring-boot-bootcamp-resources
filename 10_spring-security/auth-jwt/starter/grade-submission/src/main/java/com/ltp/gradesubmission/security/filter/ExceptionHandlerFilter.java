@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.ltp.gradesubmission.exception.EntityNotFoundException;
+
 // Inherit from OncePerRequestFilter instead of general filter to ensure the filter is invoked
 // once per Request
 // This ExceptionHandlerFilter will be placed before any other filter. and then we'll wrap the
@@ -24,7 +26,11 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
       chain.doFilter(request, response);
     }
     // here you can catch any type of exception that'll be triggered downstream here
-    catch (RuntimeException e) {
+    catch (EntityNotFoundException e) {
+      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      response.getWriter().write("Username does not exist");
+      response.getWriter().flush();
+    } catch (RuntimeException e) {
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       // If you want to write a string in response
       response.getWriter().write("BAD_REQUEST");

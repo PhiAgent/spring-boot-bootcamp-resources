@@ -46,8 +46,14 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter{
     }
   }
 
+  // @Override
+  // protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+  //     Authentication authResult) throws IOException, ServletException {
+  //   System.out.println("boohoo, authentication failed");
+  // }
+
   @Override
   protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-    super.successfulAuthentication(request, response, chain, authResult);
+    System.out.println("wohoo, authentication worked");
   }
 }
