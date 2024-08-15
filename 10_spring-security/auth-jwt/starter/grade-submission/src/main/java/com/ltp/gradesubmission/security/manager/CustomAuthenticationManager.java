@@ -22,6 +22,11 @@ public class CustomAuthenticationManager implements AuthenticationManager{
 
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    // Here, we try to fetch the user in the record with this username
+    // if no user with the username exists, a
+    // NoEntityFoundException will be thrown and
+    // this exception can be caught in the
+    // ExceptionHandlerFilter
     User user = userService.getUser(authentication.getName());
 
     // this is where we check to see if the encrypted password user provides matches
