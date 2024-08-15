@@ -32,7 +32,7 @@ public class CustomAuthenticationManager implements AuthenticationManager{
     // this is where we check to see if the encrypted password user provides matches
     // the encrypted password that's stored in record
     if(!bCryptPasswordEncoder.matches(authentication.getCredentials().toString(), user.getPassword()))
-      throw new BadCredentialsException("Wrong Password");
+      throw new BadCredentialsException("You provided an incorrect password");
 
     // if the correct credentials are supplied, we won't make it to this line as the
     // BadCredentialsException will be thrown above so at this point, its safe to say
