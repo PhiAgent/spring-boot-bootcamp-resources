@@ -9,6 +9,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import com.ltp.gradesubmission.security.filter.AuthenticationFilter;
 import com.ltp.gradesubmission.security.filter.ExceptionHandlerFilter;
+import com.ltp.gradesubmission.security.manager.CustomAuthenticationManager;
 
 import lombok.AllArgsConstructor;
 
@@ -19,9 +20,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @AllArgsConstructor
 public class SecurityConfig {
 
+    CustomAuthenticationManager customAuthenticationManager;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager);
         // this is where we specify what url we intend to authenticate on
         authenticationFilter.setFilterProcessesUrl("/authenticate");
         http
