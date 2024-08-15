@@ -19,13 +19,6 @@ import com.ltp.gradesubmission.entity.User;
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter{
 
   @Override
-  public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-      throws IOException, ServletException {
-
-    chain.doFilter(request, response);
-  }
-
-  @Override
   public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
     // if user puts invalid fields in request,

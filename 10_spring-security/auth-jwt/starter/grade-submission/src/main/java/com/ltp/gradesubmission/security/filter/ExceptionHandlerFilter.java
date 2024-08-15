@@ -24,7 +24,11 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
       chain.doFilter(request, response);
     }
     // here you can catch any type of exception that'll be triggered downstream here
-    catch (RuntimeException e) {}
-
+    catch (RuntimeException e) {
+      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+      // If you want to write a string in response
+      response.getWriter().write("BAD_REQUEST");
+      response.getWriter().flush();
+    }
   }
 }
