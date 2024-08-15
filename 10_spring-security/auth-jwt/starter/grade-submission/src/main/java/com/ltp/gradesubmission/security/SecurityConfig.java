@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.ltp.gradesubmission.security.filter.AuthenticationFilter;
+import com.ltp.gradesubmission.security.filter.ExceptionHandlerFilter;
 
 import lombok.AllArgsConstructor;
 
@@ -39,9 +40,12 @@ public class SecurityConfig {
                     // this filter won't be applied unless user
                     // specifies that they want to authenticate on this
                     // url by defining the url in the authenticator filter
+                    .addFilterBefore(new ExceptionHandlerFilter(),
+                        AuthenticationFilter.class)
                     .addFilter(
                         authenticationFilter)
             .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
         return http.build();
     }
 
