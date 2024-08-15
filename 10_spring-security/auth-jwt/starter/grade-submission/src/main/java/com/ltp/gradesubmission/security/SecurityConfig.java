@@ -9,6 +9,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import com.ltp.gradesubmission.security.filter.AuthenticationFilter;
 import com.ltp.gradesubmission.security.filter.ExceptionHandlerFilter;
+import com.ltp.gradesubmission.security.filter.JWTAuthorizationFilter;
 import com.ltp.gradesubmission.security.manager.CustomAuthenticationManager;
 
 import lombok.AllArgsConstructor;
@@ -47,6 +48,7 @@ public class SecurityConfig {
                         AuthenticationFilter.class)
                     .addFilter(
                         authenticationFilter)
+                    .addFilterAfter(new JWTAuthorizationFilter(), AuthenticationFilter.class)
             .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
